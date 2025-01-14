@@ -95,6 +95,7 @@ class AlienInvasion:
             self.stats.reset_stats()
             self.stats.game_active = True
             self.sb.prep_score()
+            self.sb.prep_level()
             # Очистка списков пришельцев и снарядов
             self.aliens.empty()
             self.bullets.empty()
@@ -180,7 +181,7 @@ class AlienInvasion:
         """Обновляет позицию снарядов и уничтожает старые"""
         # Обновление позиции снарядов
         self.bullets.update()
-        # Удаление снадов, вышедших за край экрана
+        # Удаление снарядов, вышедших за край экрана
         for bullet in self.bullets.copy():
             if bullet.rect.bottom <= 0:
                 self.bullets.remove(bullet)
@@ -196,6 +197,10 @@ class AlienInvasion:
             self.bullets.empty()
             self._create_fleet()
             self.settings.increase_speed()
+            # Увеличения уровня
+            self.stats.level += 1
+            self.sb.prep_level()
+
         if collisions:
             for aliens in collisions.values():
                 self.stats.score += self.settings.alien_points
